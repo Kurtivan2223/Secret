@@ -15,19 +15,19 @@ public:
 		tstruct = *localtime(&now);
 		switch (c)
 		{
-		case 1:
+		case DATE_LEVEL_TIMESTAMP:
 			strftime(buffer, sizeof(buffer), "%Y-%m-%d %X", &tstruct);
 			break;
-		case 2:
+		case DATE_LEVEL_DATE:
 			strftime(buffer, sizeof(buffer), "%Y-%m-%d", &tstruct);
 			break;
-		case 3:
+		case DATE_LEVEL_YEAR:
 			strftime(buffer, sizeof(buffer), "%Y", &tstruct);
 			break;
-		case 4:
+		case DATE_LEVEL_MONTH:
 			strftime(buffer, sizeof(buffer), "%m", &tstruct);
 			break;
-		case 5:
+		case DATE_LEVEL_DAY:
 			strftime(buffer, sizeof(buffer), "%d", &tstruct);
 			break;
 		}
