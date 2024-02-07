@@ -64,10 +64,10 @@ void Log::ConsoleLog(uint8 c, std::string m)
 {
 	switch (c)
 	{
-	case 0:
+	case CONSOLE_LOG_LEVEL_NORMAL:
 		std::cout << m << std::endl;
 		break;
-	case 1:
+	case CONSOLE_LOG_LEVEL_ABNORMAL:
 		std::cerr << m << std::endl;
 		break;
 	}
