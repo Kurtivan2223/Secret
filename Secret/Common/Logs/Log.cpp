@@ -5,40 +5,44 @@
 void Log::Logging(uint8 s, std::string m)
 {
 	std::string _temp;
-	std::string _timestamp = Utils.GetDateTime(DATE_LEVEL_TIMESTAMP);
-	uint8 _cli;
+	std::string _timestamp = Util::GetDateTime(DATE_LEVEL_TIMESTAMP);
+	int _cli = NULL;
 	switch (s)
 	{
 	case LOG_LEVEL_INFO:
 		_temp = "[INFO] " + _timestamp + " - " + m;
-		_cli = CLI_LEVEL_NORMAL;
+		_cli = CONSOLE_LOG_LEVEL_NORMAL;
 		break;
-	case LOG_LEVEL_INFO_FATAL:
+	case LOG_LEVEL_FATAL:
 		_temp = "[FATAL] " + _timestamp + " - " + m;
-		_cli = CLI_LEVEL_ABNORMAL;
+		_cli = CONSOLE_LOG_LEVEL_ABNORMAL;
 		break;
 	case LOG_LEVEL_ERROR:
 		_temp = "[ERROR] " + _timestamp + " - " + m;
-		_cli = CLI_LEVEL_ABNORMAL;
+		_cli = CONSOLE_LOG_LEVEL_ABNORMAL;
 		break;
 	case LOG_LEVEL_WARN:
 		_temp = "[WARNING] " + _timestamp + " - " + m;
-		_cli = CLI_LEVEL_ABNORMAL;
+		_cli = CONSOLE_LOG_LEVEL_ABNORMAL;
 		break;
 	case LOG_LEVEL_DEBUG:
 		_temp = "[DEBUG] " + _timestamp + " - " + m;
-		_cli = CLI_LEVEL_NORMAL;
+		_cli = CONSOLE_LOG_LEVEL_NORMAL;
 		break;
 	case LOG_LEVEL_UNKNOWN:
 		_temp = "[UNKNOWN] " + _timestamp + " - " + m;
-		_cli = CLI_LEVEL_ABNORMAL;
+		_cli = CONSOLE_LOG_LEVEL_ABNORMAL;
 		break;
 	case LOG_LEVEL_TRACE:
 		_temp = "[TRACE] " + _timestamp + " - " + m;
-		_cli = CLI_LEVEL_NORMAL;
+		_cli = CONSOLE_LOG_LEVEL_NORMAL;
+		break;
+	case LOG_LEVEL_DATABASE:
+		_temp = "[DATABASE] " + _timestamp + " - " + m;
+		_cli = CONSOLE_LOG_LEVEL_NORMAL;
 		break;
 	}
-	CLI(_cli, _temp);
+	ConsoleLog(_cli, _temp);
 	Write(_temp);
 }
 
@@ -46,24 +50,24 @@ void Log::Write(std::string m)
 {
 	if (!std::filesystem::exists("Logs"))
 		std::filesystem::create_directory("Logs");
-	std::string _file = "Logs/Report_" + Utils.GetDateTime(DATE_LEVEL_DATE) + ".log";
+	std::string _file = "Logs/Report_" + Util::GetDateTime(DATE_LEVEL_DATE) + ".log";
 	std::ofstream _buffer(_file.c_str(), std::ios::out | std::ios::app);
 	if (!_buffer.is_open())
-		CLI(CLI_LEVEL_ABNORMAL, "[FATAL] " + Utils.GetDateTime(DATE_LEVEL_TIMESTAMP) + " - Something Went Wrong With Loggers File Handling!");
+		ConsoleLog(CONSOLE_LOG_LEVEL_ABNORMAL, "[FATAL] " + Util::GetDateTime(DATE_LEVEL_TIMESTAMP) + " - Something Went Wrong With Loggers File Handling!");
 	if (!_buffer.fail())
-		CLI(CLI_LEVEL_ABNORMAL, "[FATAL] " + Utils.GetDateTime(DATE_LEVEL_TIMESTAMP) + " - Something Went Wrong When Writing Logs at Log File!");	
+		ConsoleLog(CONSOLE_LOG_LEVEL_ABNORMAL, "[FATAL] " + Util::GetDateTime(DATE_LEVEL_TIMESTAMP) + " - Something Went Wrong When Writing Logs at Log File!");
 	_buffer << m << "\n";
 	_buffer.close();
 }
 
-void Log::CLI(uint8 c, std::string m)
+void Log::ConsoleLog(uint8 c, std::string m)
 {
 	switch (c)
 	{
-	case CLI_LEVEL_NORMAL:
+	case 0:
 		std::cout << m << std::endl;
 		break;
-	case CLI_LEVEL_ABNORMAL:
+	case 1:
 		std::cerr << m << std::endl;
 		break;
 	}

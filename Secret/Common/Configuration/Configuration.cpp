@@ -1,7 +1,5 @@
 #include "Configuration.h"
-#include "../Logs/Log.h"
-
-Log Logs;
+#include "Log.h"
 
 void Configuration::Read(const std::string& _filename)
 {
@@ -43,18 +41,19 @@ std::string Configuration::Value(const std::string& _section, const std::string&
 
 void Configuration::Configure()
 {
+	Log::Logging(LOG_LEVEL_INFO, "Setting Configuration");
 	std::string _temp;
 	std::string _file = "Settings.ini";
-
 	if (std::filesystem::exists(_file))
 	{
+		Log::Logging(LOG_LEVEL_DEBUG, "Reading Config File");
 		Read(_file);
+		Log::Logging(LOG_LEVEL_DEBUG, "Done Reading Config File");
 		_db._host = Value("DATABASE", "HOST");
 		_db._user = Value("DATABASE", "USER");
 		_db._pwd = Value("DATABASE", "PASSWORD");
 		_db._dbname = Value("DATABASE", "DBNAME");
-
-#ifdef TESTING
+#ifdef _TESTING
 		_db._port = Value("DATABASE", "PORT");
 #else
 #ifdef _RELEASE
@@ -68,19 +67,27 @@ void Configuration::Configure()
 		catch (const std::invalid_argument& _e)
 		{
 			_temp = _e.what();
-			Logs.Logging(LOG_LEVEL_FATAL, "Conversion error: " + _temp);
+			Log::Logging(LOG_LEVEL_FATAL, "Conversion error: " + _temp);
 		}
 		catch (const std::out_of_range& _e)
 		{
 			_temp = _e.what();
-			Logs.Logging(LOG_LEVEL_FATAL, "Conversion error: " + _temp);
+			Log::Logging(LOG_LEVEL_FATAL, "Conversion error: " + _temp);
 		}
 #endif
 #endif
-		Logs.Logging(LOG_LEVEL_INFO, "Successfully Loaded Configuration");
+		Log::Logging(LOG_LEVEL_DATABASE, "HOST: " + _db._host);
+		Log::Logging(LOG_LEVEL_DATABASE, "USERNAME: " + _db._user);
+		Log::Logging(LOG_LEVEL_DATABASE, "PASSWORD: " + _db._pwd);
+		Log::Logging(LOG_LEVEL_DATABASE, "DBNAME: " + _db._dbname);
+		Log::Logging(LOG_LEVEL_DATABASE, "PORT: " + _db._port);
+		Log::Logging(LOG_LEVEL_DEBUG, "Successfully Initialize Configuration");
 	}
 	else
-		Logs.Logging(LOG_LEVEL_ERROR, "Configuration File can't be found!");
+	{
+		Log::Logging(LOG_LEVEL_ERROR, "Configuration File can't be found!");
+		exit(1);
+	}
 }
 
 void Configuration::Trim(std::string& _str)

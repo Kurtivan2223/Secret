@@ -7,33 +7,8 @@
 
 class Util {
 public:
-	static std::string GetDateTime(uint8 c)
-	{
-		time_t now = time(0);
-		struct tm tstruct;
-		char buffer[80] = { 0 };
-		tstruct = *localtime(&now);
-		switch (c)
-		{
-		case DATE_LEVEL_TIMESTAMP:
-			strftime(buffer, sizeof(buffer), "%Y-%m-%d %X", &tstruct);
-			break;
-		case DATE_LEVEL_DATE:
-			strftime(buffer, sizeof(buffer), "%Y-%m-%d", &tstruct);
-			break;
-		case DATE_LEVEL_YEAR:
-			strftime(buffer, sizeof(buffer), "%Y", &tstruct);
-			break;
-		case DATE_LEVEL_MONTH:
-			strftime(buffer, sizeof(buffer), "%m", &tstruct);
-			break;
-		case DATE_LEVEL_DAY:
-			strftime(buffer, sizeof(buffer), "%d", &tstruct);
-			break;
-		}
-
-		return std::string(buffer);
-	}
+	static std::string GetDateTime(uint8 c);
+	static int strtobool(std::string s);
 };
 
 enum DateTimeLevel : uint8 {
@@ -42,9 +17,9 @@ enum DateTimeLevel : uint8 {
 	DATE_LEVEL_YEAR = 3,
 	DATE_LEVEL_MONTH = 4,
 	DATE_LEVEL_DAY = 5,
-
+	DATE_LEVEL_HOUR = 6,
+	DATE_LEVEL_MINUTE = 7,
+	DATE_LEVEL_SECOND = 8,
 
 	DATE_LEVEL_INVALID = 0xFF
 };
-
-Util Utils;

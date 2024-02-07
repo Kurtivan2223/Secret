@@ -1,6 +1,6 @@
 #pragma once
 
-#define TESTING
+#define _TESTING
 
 #include <iostream>
 #include <fstream>
@@ -17,16 +17,14 @@ public:
 		std::string _user;
 		std::string _pwd;
 		std::string _dbname;
-#ifdef TESTING
+#ifdef _TESTING
 		std::string _port;
 #else
 		int _port;
 #endif
 	}DatabaseInfo;
-
 	std::string Value(const std::string& _section, const std::string& _key) const;
 	void Configure();
-
 	DatabaseInfo _db;
 
 private:
