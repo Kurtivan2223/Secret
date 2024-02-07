@@ -9,31 +9,31 @@ void Log::Logging(uint8 s, std::string m)
 	uint8 _cli;
 	switch (s)
 	{
-	case 1:
+	case LOG_LEVEL_INFO:
 		_temp = "[INFO] " + _timestamp + " - " + m;
 		_cli = CLI_LEVEL_NORMAL;
 		break;
-	case 2:
+	case LOG_LEVEL_INFO_FATAL:
 		_temp = "[FATAL] " + _timestamp + " - " + m;
 		_cli = CLI_LEVEL_ABNORMAL;
 		break;
-	case 3:
+	case LOG_LEVEL_ERROR:
 		_temp = "[ERROR] " + _timestamp + " - " + m;
 		_cli = CLI_LEVEL_ABNORMAL;
 		break;
-	case 4:
+	case LOG_LEVEL_WARN:
 		_temp = "[WARNING] " + _timestamp + " - " + m;
 		_cli = CLI_LEVEL_ABNORMAL;
 		break;
-	case 5:
+	case LOG_LEVEL_DEBUG:
 		_temp = "[DEBUG] " + _timestamp + " - " + m;
 		_cli = CLI_LEVEL_NORMAL;
 		break;
-	case 6:
+	case LOG_LEVEL_UNKNOWN:
 		_temp = "[UNKNOWN] " + _timestamp + " - " + m;
 		_cli = CLI_LEVEL_ABNORMAL;
 		break;
-	case 7:
+	case LOG_LEVEL_TRACE:
 		_temp = "[TRACE] " + _timestamp + " - " + m;
 		_cli = CLI_LEVEL_NORMAL;
 		break;
@@ -60,10 +60,10 @@ void Log::CLI(uint8 c, std::string m)
 {
 	switch (c)
 	{
-	case 0:
+	case CLI_LEVEL_NORMAL:
 		std::cout << m << std::endl;
 		break;
-	case 1:
+	case CLI_LEVEL_ABNORMAL:
 		std::cerr << m << std::endl;
 		break;
 	}
